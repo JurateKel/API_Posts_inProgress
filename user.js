@@ -19,6 +19,7 @@ console.log(userIdNum)
 fetch(`https://jsonplaceholder.typicode.com/users/${userIdNum}`)
 .then(res=>res.json())
 .then(user => {
+    console.log(user)
         let userProfile = document.createElement(`div`);
         userProfile.classList.add(`user-profile-card`)
         let userId = document.createElement(`p`);
@@ -35,45 +36,70 @@ fetch(`https://jsonplaceholder.typicode.com/users/${userIdNum}`)
         userWeb.textContent = `Web page: ${user.website}`;
         let userCompany = document.createElement(`p`);
         userCompany.textContent = `Company name: ${user.company.name}`;
-        let userAddress = document.createElement(`div`);
+        let userAddress = document.createElement(`span`);
         userAddress.textContent = `Address: `;
         let userAddressLink = document.createElement(`a`);
-        let userAddressStreet = document.createElement(`span`);
-        userAddressStreet.textContent = `${user.address.street}, `;
-        let userAddressSuite = document.createElement(`span`);
-        userAddressSuite.textContent = `${user.address.suite}, `;
-        let userAddressCity = document.createElement(`span`);
-        userAddressCity.textContent = `${user.address.city}, `;
-        let userAddressZipcode = document.createElement(`span`);
-        userAddressZipcode.textContent = `${user.address.zipcode}.`;
-        let userAddressMap = document.createElement(`div`);
-        let userAddressMapIframe = document.createElement(`iframe`);
-
-
+        userAddressLink.textContent = `${user.address.street}, ${user.address.suite}, ${user.address.city}, ${user.address.zipcode}.`
+        let mapLan = user.address.geo.lat;
+        let mapLng = user.address.geo.lng;
+        userAddressLink.href = `http://maps.google.com/maps?q=${mapLan},${mapLng}`
+        userAddressLink.target = `_blank`
+        let postsWrapper = document.createElement(`div`)
+        let posts = document.createElement(`h4`)
+        posts.textContent = `User posts:`
+        let albumsWrapper = document.createElement(`div`);
+        let albums = document.createElement(`h4`)
+        albums.textContent = `User albums:`
 
         fetch(`https://jsonplaceholder.typicode.com/posts?userId=${userIdNum}`)
         .then(res=>res.json())
         .then(posts=> {
             posts.map(post=> {
+
             let postEl = document.createElement(`p`)
-            postEl.textContent = post.body
+            postEl.textContent = `${post.body}. `
+            let postSpan = document.createElement(`span`);
+            let postLink = document.createElement(`a`);
+            postLink.href = `./post.html?post_id=${post.id}`
+            postLink.textContent = `Go to post`
 
-            userProfile.append(postEl)
+            postsWrapper.append(postEl)
+            postEl.append(postSpan)
+            postSpan.after(postLink)
             })
+        })
+        fetch(`https://jsonplaceholder.typicode.com/albums?userId=${userIdNum}`)
+        .then(res=>res.json())
+        .then(albums => {
+            console.log(albums)
+            albums.map(album => {
+                let albumEl = document.createElement(`p`);
+                albumEl.textContent = `${album.title} `
+                let albumSpan = document.createElement(`span`);
+                let albumLink = document.createElement(`a`);
+                albumLink.href = `./album.html?album_id=${album.id}`
+                albumLink.textContent = `About album`
 
-
+                albumsWrapper.append(albumEl)
+                albumEl.append(albumSpan)
+                albumSpan.after(albumLink)
+                
+            })
         })
 
         document.querySelector(`body`).append(userProfile);
-        userProfile.append(userId, userFullName, userNickName, userEmail, userPhone, userWeb, userCompany, userAddress);
+        userProfile.append(userId, userFullName, userNickName, userEmail, userPhone, userWeb, userCompany, userAddress, postsWrapper, albumsWrapper);
+        postsWrapper.append(posts)
+        albumsWrapper.append(albums)
         userAddress.append(userAddressLink)
-        userAddressLink.append(userAddressStreet, userAddressSuite, userAddressCity, userAddressZipcode, userAddressMap)
-        userAddressMap.append(userAddressMapIframe)
+
 })
 .catch(error => {
+    console.log(error)
     let errorMessage = document.createElement(`h1`)
     errorMessage.textContent = `Vartotojo nera`
 
     document.body.prepend(errorMessage)
 })
+
 

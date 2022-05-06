@@ -3,6 +3,13 @@
 .post-wrapper {
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-between;
+    background-color: rgb(250, 249, 253);
+    padding: 2%;
+}
+.album-wrapper {
+    display: flex;
+    flex-wrap: wrap;
     background-color: rgb(250, 249, 253);
     padding: 2%;
 }
@@ -13,6 +20,13 @@
 
 .card {
     width: 48%;
+    margin: 1%;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 5px 5px 5px rgb(209, 207, 218);
+}
+.album-wrapper .card {
+    width: 23%;
     margin: 1%;
     padding: 10px;
     border-radius: 10px;

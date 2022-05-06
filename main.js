@@ -1,10 +1,16 @@
+let postsWrapper = document.createElement(`div`)
+postsWrapper.classList.add(`post-wrapper`)
+document.body.prepend(postsWrapper)
+
+let albumsWrapper= document.createElement(`div`)
+albumsWrapper.classList.add(`album-wrapper`)
+
+
+document.body.prepend(albumsWrapper)
+
 fetch(`https://jsonplaceholder.typicode.com/posts?_limit=12`)
 .then(res=>res.json())
 .then(posts => {
-    let postsWrapper = document.createElement(`div`)
-    postsWrapper.classList.add(`post-wrapper`)
-    document.body.prepend(postsWrapper)
-
 
     posts.map((post)=> {
         let title = post.title;
@@ -38,10 +44,9 @@ fetch(`https://jsonplaceholder.typicode.com/posts?_limit=12`)
         .then(comments => {
             comments.map(comment => {
                 postCommentsWrapper.classList.add(`accordion`, `accordion-flush`, `collapse`)
-                postCommentsWrapper.setAttribute(`id`, `accordion`);
+                postCommentsWrapper.setAttribute(`id`, `multiCollapse${postId}`);
                 let postComment = document.createElement(`div`);
-                postComment.classList.add(`accordion-item`, `collapse`, `multi-collapse`)
-                postComment.setAttribute(`id`, `multiCollapse${postId}`)
+                postComment.classList.add(`accordion-item`)
                 let commentName = document.createElement(`h2`);
                 commentName.setAttribute(`id`, `flush-heading${comment.id}`);
                 commentName.classList.add(`accordion-header`);
@@ -100,3 +105,43 @@ fetch(`https://jsonplaceholder.typicode.com/posts?_limit=12`)
     })
 })
 
+fetch(`https://jsonplaceholder.typicode.com/albums?_limit=8`)
+.then(res=>res.json())
+.then(albums => {
+    albums.map(album => {
+        console.log(album.id)
+        let albumElement = document.createElement(`div`);
+        albumElement.classList.add(`card`)
+        let albumImg = document.createElement(`img`)
+        albumImg.classList.add(`card-img-top`)
+        let albumBody = document.createElement(`div`);
+        albumBody.classList.add(`car-body`)
+        let albumTitleLink = document.createElement(`a`);
+        albumTitleLink.href = `./album.html?album_id=${album.id}`
+        let albumTitle = document.createElement(`h5`);
+        albumTitle.textContent = album.title
+        albumTitle.classList.add(`card-title`)
+        let albumAuthor = document.createElement(`span`);
+        let albumAuthorLink = document.createElement(`a`);
+
+        fetch(`https://jsonplaceholder.typicode.com/users/${album.userId}`)
+        .then(res=>res.json())
+        .then(user=>{
+            albumAuthor.textContent = `Album author: `;
+            albumAuthorLink.textContent = `${user.name}`;
+            albumAuthorLink.href = `./album.html?album_id=${album.userId}`;
+        })
+
+        fetch(`https://jsonplaceholder.typicode.com/albums/${album.id}/photos?_limit=1`)
+        .then(res=>res.json())
+        .then(img => {
+            albumImg.src = img[0].url;
+        })
+
+        albumsWrapper.append(albumElement)
+        albumElement.append(albumImg, albumBody)
+        albumBody.append(albumTitleLink, albumAuthor)
+        albumTitleLink.append(albumTitle)
+        albumAuthor.after(albumAuthorLink)
+    })
+})
