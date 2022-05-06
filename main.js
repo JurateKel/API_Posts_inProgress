@@ -29,7 +29,7 @@ fetch(`https://jsonplaceholder.typicode.com/posts?_limit=12`)
             postTitle.textContent = title;
             postBody.textContent = body;
             postAuthor.textContent = `Author: `
-            authorLink.href = `/user.html?user_id=${userId}`;
+            authorLink.href = `./user.html?user_id=${userId}`;
             authorLink.textContent = user.name;
         })
 
