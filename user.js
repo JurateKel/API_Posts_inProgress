@@ -1,25 +1,11 @@
-// 3. Sukurti naują puslapį user.html, kuriame bus atvaizduojama vartotojo informacija:
-// 3.1. Pilnas vardas.
-// 3.2. Vartotojo vardas / nick'as.
-// 3.3. El. paštas.
-// 3.4. Adresas, kuris turės gatvę, namo numerį, miestą, pašto kodą. Paspaudus ant adreso, pagal koordinates, turėtų atidaryti šios vietos Google Maps. Kol kas naudoti bet kokią Google Map vietovę.
-// 3.5. Telefono numeris.
-// 3.6. Internetinio puslapio adresas.
-// 3.7. Įmonės, kurioje dirba, pavadinimas.
 
-// 4. Šiame puslapyje turės būti atvaizduojama:
-// 4.1. Visi vartotojo parašyti įrašai (posts). Post'ų įrašuose nereikia atvaizduoti komentarų. Kiekvienas post'as turi turėti nuorodą.
-// 4.2. Visi vartotojo sukurti foto albumai. Kiekvienas albumas turės:
-// 4.2.1. Albumo pavadinimą, kuris turi būti nuoroda. Kol kas nuoroda gali niekur nevesti.
 let queryParams = document.location.search;
 let urlParams = new URLSearchParams(queryParams);
 let userIdNum = urlParams.get(`user_id`);
-console.log(userIdNum)
 
 fetch(`https://jsonplaceholder.typicode.com/users/${userIdNum}`)
 .then(res=>res.json())
 .then(user => {
-    console.log(user)
         let userProfile = document.createElement(`div`);
         userProfile.classList.add(`user-profile-card`)
         let userId = document.createElement(`p`);
@@ -71,7 +57,6 @@ fetch(`https://jsonplaceholder.typicode.com/users/${userIdNum}`)
         fetch(`https://jsonplaceholder.typicode.com/albums?userId=${userIdNum}`)
         .then(res=>res.json())
         .then(albums => {
-            console.log(albums)
             albums.map(album => {
                 let albumEl = document.createElement(`p`);
                 albumEl.textContent = `${album.title} `
@@ -95,7 +80,6 @@ fetch(`https://jsonplaceholder.typicode.com/users/${userIdNum}`)
 
 })
 .catch(error => {
-    console.log(error)
     let errorMessage = document.createElement(`h1`)
     errorMessage.textContent = `Vartotojo nera`
 

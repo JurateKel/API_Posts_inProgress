@@ -52,8 +52,8 @@ fetch(`https://jsonplaceholder.typicode.com/posts?_limit=12`)
                 commentName.classList.add(`accordion-header`);
                 let commentButton = document.createElement(`button`);
                 commentButton.classList.add(`accordion-button`, `collapsed`)
-                commentName.setAttribute(`data-bs-toggle`, `collapse`);
-                commentName.setAttribute(`data-bs-target`, `#flush-collapse${comment.id}`);
+                commentName.dataset.bsToggle = `collapse`;
+                commentName.dataset.bsTarget =`#flush-collapse${comment.id}`;
                 commentName.setAttribute(`aria-expanded`, `false`);
                 commentName.setAttribute(`aria-controls`, `flush-collapse${comment.id}`);
                 let commentTextAccordion = document.createElement(`div`);
@@ -129,7 +129,7 @@ fetch(`https://jsonplaceholder.typicode.com/albums?_limit=8`)
         .then(user=>{
             albumAuthor.textContent = `Album author: `;
             albumAuthorLink.textContent = `${user.name}`;
-            albumAuthorLink.href = `./album.html?album_id=${album.userId}`;
+            albumAuthorLink.href = `./user.html?user_id=${album.userId}`;
         })
 
         fetch(`https://jsonplaceholder.typicode.com/albums/${album.id}/photos?_limit=1`)
