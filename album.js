@@ -15,18 +15,18 @@ fetch(`https://jsonplaceholder.typicode.com/albums/${albumId}`)
     albumTitle.textContent = album.title;
     albumTitle.style.paddingLeft = `2.5%`
     albumWrapper.prepend(albumTitle)
-
-
+    let albumAuthorLink = document.createElement(`a`);
+    
+    
     fetch(`https://jsonplaceholder.typicode.com/users/${album.userId}`)
     .then(res=>res.json())
     .then(author => {
-        let albumAuthorLink = document.createElement(`a`);
         albumAuthorLink.href = `./user.html?user_id=${album.userId}`
         albumAuthorLink.textContent = author.name
         let albumAuthor = document.createElement(`span`)
         albumAuthor.textContent = `Author: `;
         albumAuthor.style.padding = `2.5%`
-        albumWrapper.append(albumAuthorLink);
+        imgWrapper.before(albumAuthorLink);
         albumAuthorLink.before(albumAuthor)
     })
 
