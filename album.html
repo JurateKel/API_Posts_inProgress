@@ -5,7 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="./node_modules/photoswipe/dist/photoswipe.css">
+    <link rel="stylesheet" href="./photoswipe.css">
+
   
 </head>
 <body>
@@ -14,11 +15,11 @@
   
 <script src="./album.js" defer></script>
 <script type="module" defer>
-    import PhotoSwipeLightbox from './node_modules/photoswipe/dist/photoswipe-lightbox.esm.js';
+    import PhotoSwipeLightbox from './photoswipe-lightbox.esm.min.js';
     const lightbox = new PhotoSwipeLightbox({
       gallery: '#gallery',
       children: 'a',
-      pswpModule: () => import('./node_modules/photoswipe/dist/photoswipe.esm.js')
+      pswpModule: () => import('./photoswipe.esm.min.js')
     });
     lightbox.init();
 </script>
