@@ -1,0 +1,25 @@
+body {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    background-color: #f1f1f1;
+}
+body * {
+    margin: 0 0 10px 0;
+}
+body > div {
+    display: flex;
+    flex-direction: column;
+    width: 22%;
+    box-sizing: border-box;
+    background-color: white;
+    padding: 10px;
+    margin: 1%;
+    border-radius: 10px;
+}
+img {
+    width: 100%;
+}
+h4 {
+    height: 40px;
+}

@@ -24,7 +24,7 @@ fetch(`https://jsonplaceholder.typicode.com/posts/${postId}`)
 
     let morePosts = document.createElement(`a`)
     morePosts.textContent = `More posts...`
-    morePosts.href = `./authorIdPosts.html?user_id=${post.userId}`
+    morePosts.href = `./posts.html?user_id=${post.userId}`
 
     fetch(`https://jsonplaceholder.typicode.com/posts/${postId}/comments`)
     .then(res=>res.json())

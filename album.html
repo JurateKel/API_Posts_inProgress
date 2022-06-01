@@ -5,24 +5,21 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="./photoswipe.css">
-
-  
+    <link rel="stylesheet" href="./photoswipe/photoswipe.css">
+    <link rel="stylesheet" href="./album.css">
+    <script src="./album.js" defer></script>
+    <script type="module" defer>
+        import PhotoSwipeLightbox from './photoswipe/photoswipe-lightbox.esm.min.js';
+        const lightbox = new PhotoSwipeLightbox({
+        gallery: '#gallery',
+        children: 'a',
+        pswpModule: () => import('./photoswipe/photoswipe.esm.min.js')
+        });
+        lightbox.init();
+    </script>
 </head>
 <body>
-    
     <div class="pswp-gallery pswp-gallery--single-column" id="gallery">
     </div>
-  
-<script src="./album.js" defer></script>
-<script type="module" defer>
-    import PhotoSwipeLightbox from './photoswipe-lightbox.esm.min.js';
-    const lightbox = new PhotoSwipeLightbox({
-      gallery: '#gallery',
-      children: 'a',
-      pswpModule: () => import('./photoswipe.esm.min.js')
-    });
-    lightbox.init();
-</script>
 </body>
 </html>

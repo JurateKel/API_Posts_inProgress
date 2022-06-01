@@ -1,8 +1,4 @@
-// 8. Sukurti vartotojų puslapį (users.html), kuriame būtų atvaizduotas vartotojų sąrašas.
-// 8.1. Prie vartotojo turėtu būti jo vardas ir parašytų post'ų skaičius.
-// 8.2. Paspaudus ant vartotojo - nukreipiama į jo puslapį.
-
-let usersWrapper = document.querySelector(`#users-wrapper`)
+const usersWrapper = document.querySelector(`#users-wrapper`)
 fetch(`https://jsonplaceholder.typicode.com/users`)
 .then(res=>res.json())
 .then(users => {

@@ -1,13 +1,7 @@
 
-// 9.1. Prie kiekvieno albumo turi būti:
-// 9.1.1. Parašytas jo pavadinimas.
-// 9.1.2. Parašytas vartotojo, sukūrusio šį albumą, vardas.
-// 9.1.3. Albume esančių nuotraukų skaičius.
-// 9.1.4. Viena nuotrauka
-
-let queryParams = document.location.search;
-let urlParams = new URLSearchParams(queryParams);
-let userId = urlParams.get(`user_id`)
+const queryParams = document.location.search;
+const urlParams = new URLSearchParams(queryParams);
+const userId = urlParams.get(`user_id`)
 
 if (userId) {
 

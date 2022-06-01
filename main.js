@@ -1,142 +1,154 @@
 let postsWrapper = document.createElement(`div`)
 postsWrapper.classList.add(`post-wrapper`)
-document.body.prepend(postsWrapper)
+document.querySelector(`#main`).prepend(postsWrapper)
 
 let albumsWrapper= document.createElement(`div`)
 albumsWrapper.classList.add(`album-wrapper`)
+document.querySelector(`#main`).prepend(albumsWrapper)
 
-
-document.body.prepend(albumsWrapper)
-
-fetch(`https://jsonplaceholder.typicode.com/posts?_limit=12`)
-.then(res=>res.json())
-.then(posts => {
-
-    posts.map((post)=> {
-        let title = post.title;
-        let body = post.body;
-        let userId = post.userId;
-        let postId = post.id;
-        let postElement = document.createElement(`div`);
+async function getPosts() {
+    let postsResponse = await fetch(`https://jsonplaceholder.typicode.com/posts?_limit=12`)
+    let postsData = await postsResponse.json()
+    return postsData
+}
+async function getUser(userId) {
+    let userResponse = await fetch(`https://jsonplaceholder.typicode.com/users/${userId}`)
+    let userData = await userResponse.json()
+    return userData
+}
+async function getCommentsOfPost(postId) {
+    let postCommentsResponse = await fetch(`https://jsonplaceholder.typicode.com/posts/${postId}/comments`)
+    let postCommentsData = await postCommentsResponse.json()
+    return postCommentsData
+}
+async function getAlbums() {
+    let albumsResponse = await fetch(`https://jsonplaceholder.typicode.com/albums?_limit=8`)
+    let albumsData = await albumsResponse.json()
+    return albumsData
+}
+async function albumPhoto(albumId) {
+    let albumPhotoResponse = await fetch(`https://jsonplaceholder.typicode.com/albums/${albumId}/photos?_limit=1`)
+    let albumPhotoData = await albumPhotoResponse.json()
+    return albumPhotoData
+}
+async function getAlbumsUserData(albumUserId) {
+    const albumUsersRes = await fetch(`https://jsonplaceholder.typicode.com/users/${albumUserId}`)
+    const albumUsersData = await albumUsersRes.json()
+    return albumUsersData
+}
+async function getAlbumUserPhotos(albumId) {
+    const albumPhotosRes = await fetch(`https://jsonplaceholder.typicode.com/albums/${albumId}/photos?_limit=1`)
+    const albumPhotosData = await albumPhotosRes.json()
+    return albumPhotosData
+}
+async function renderPosts() {
+    let posts = await getPosts();
+    posts.map(async post => {
+        const title = post.title;
+        const body = post.body;
+        const userId = post.userId;
+        const postId = post.id;
+        const postElement = document.createElement(`div`);
+        const postTitle = document.createElement(`h5`);
+        const postAuthor = document.createElement(`span`);
+        const postBody = document.createElement(`p`);
+        const authorLink = document.createElement(`a`);
+        const showMoreComments = document.createElement(`a`);
+        const postCommentsWrapper = document.createElement(`div`);
+        postBody.classList.add(`card-text`);
+        postTitle.classList.add(`card-title`);
         postElement.classList.add(`card`);
-        let postTitle = document.createElement(`h5`);
-        postTitle.classList.add(`card-title`)
-        let postAuthor = document.createElement(`span`);
-        let postBody = document.createElement(`p`);
-        postBody.classList.add(`card-text`)
-        let authorLink = document.createElement(`a`);
-        let showMoreComments = document.createElement(`a`);
-        let postCommentsWrapper = document.createElement(`div`);
 
+        let user = await getUser(userId);
+        postTitle.textContent = title;
+        postBody.textContent = body;
+        postAuthor.textContent = `Author: `
+        authorLink.href = `./user.html?user_id=${userId}`;
+        authorLink.textContent = user.name;
 
-        fetch(`https://jsonplaceholder.typicode.com/users/${userId}`)
-        .then(res=>res.json())
-        .then(user => {
-            postTitle.textContent = title;
-            postBody.textContent = body;
-            postAuthor.textContent = `Author: `
-            authorLink.href = `./user.html?user_id=${userId}`;
-            authorLink.textContent = user.name;
-        })
-
-        fetch(`https://jsonplaceholder.typicode.com/posts/${postId}/comments`)
-        .then(res=>res.json())
-        .then(comments => {
-            comments.map(comment => {
-                postCommentsWrapper.classList.add(`accordion`, `accordion-flush`, `collapse`)
-                postCommentsWrapper.setAttribute(`id`, `multiCollapse${postId}`);
-                let postComment = document.createElement(`div`);
-                postComment.classList.add(`accordion-item`)
-                let commentName = document.createElement(`h2`);
-                commentName.setAttribute(`id`, `flush-heading${comment.id}`);
-                commentName.classList.add(`accordion-header`);
-                let commentButton = document.createElement(`button`);
-                commentButton.classList.add(`accordion-button`, `collapsed`)
-                commentName.dataset.bsToggle = `collapse`;
-                commentName.dataset.bsTarget =`#flush-collapse${comment.id}`;
-                commentName.setAttribute(`aria-expanded`, `false`);
-                commentName.setAttribute(`aria-controls`, `flush-collapse${comment.id}`);
-                let commentTextAccordion = document.createElement(`div`);
-                commentTextAccordion.setAttribute(`id`, `flush-collapse${comment.id}`)
-                commentTextAccordion.setAttribute(`aria-labelledby`,`flush-heading${comment.id}`)
-                commentTextAccordion.setAttribute(`data-bs-parent`,`#accordionFlushExample`)
-                commentTextAccordion.classList.add(`accordion-collapse`, `collapse`)
-                let commentBody = document.createElement(`div`);
-                commentBody.classList.add(`accordion-body`)
-                let commentUserEmail = document.createElement(`span`);
-                let commentUserEmailLink = document.createElement(`a`);
-                commentButton.textContent = comment.name;
-                commentBody.textContent = comment.body;
-                commentUserEmailLink.href = `mailto:#`;
-                commentUserEmailLink.textContent = comment.email;
-                commentUserEmail.textContent = `User mail: `;
-                
-                
-                showMoreComments.setAttribute(`data-bs-toggle`, `collapse`);
-                showMoreComments.setAttribute(`aria-controls`, `multiCollapse${postId}`);
-                showMoreComments.setAttribute(`aria-expanded`, `false`);
-                showMoreComments.setAttribute(`role`, `button`);
-                showMoreComments.setAttribute(`data-bs-parent`,`#accordion`);
-                showMoreComments.textContent = `Show comments`;
-                showMoreComments.href = `#multiCollapse${postId}`;
-                showMoreComments.addEventListener(`click`, e => {
-                    e.preventDefault();
-                    if (e.target.ariaExpanded === `true`) {
-                        e.target.textContent = `Hide comments`;
-                        postCommentsWrapper.classList.add(`show`)
-                    } else {
-                        e.target.textContent = `Show comments`;
-                    }
-                })
-                commentName.append(commentButton)
-                commentTextAccordion.append(commentBody, commentUserEmail)
-                postComment.append(commentName, commentTextAccordion)
-                postCommentsWrapper.append(postComment)
-                commentUserEmail.after(commentUserEmailLink)
+        let postComments = await getCommentsOfPost(postId);
+        postComments.map(async comment => {
+            const postComment = document.createElement(`div`);
+            const commentName = document.createElement(`h2`);
+            const commentButton = document.createElement(`button`);
+            const commentTextAccordion = document.createElement(`div`);
+            const commentBody = document.createElement(`div`);
+            const commentUserEmail = document.createElement(`span`);
+            const commentUserEmailLink = document.createElement(`a`);
+            postCommentsWrapper.classList.add(`accordion`, `accordion-flush`, `collapse`)
+            postCommentsWrapper.setAttribute(`id`, `multiCollapse${postId}`);
+            postComment.classList.add(`accordion-item`)
+            commentName.setAttribute(`id`, `flush-heading${comment.id}`);
+            commentName.classList.add(`accordion-header`);
+            commentName.dataset.bsToggle = `collapse`;
+            commentName.dataset.bsTarget =`#flush-collapse${comment.id}`;
+            commentName.setAttribute(`aria-expanded`, `false`);
+            commentName.setAttribute(`aria-controls`, `flush-collapse${comment.id}`);
+            commentTextAccordion.setAttribute(`id`, `flush-collapse${comment.id}`)
+            commentTextAccordion.setAttribute(`aria-labelledby`,`flush-heading${comment.id}`)
+            commentTextAccordion.setAttribute(`data-bs-parent`,`#accordionFlushExample`)
+            commentTextAccordion.classList.add(`accordion-collapse`, `collapse`)
+            commentBody.classList.add(`accordion-body`)
+            commentButton.classList.add(`accordion-button`, `collapsed`)
+            commentButton.textContent = comment.name;
+            commentBody.textContent = comment.body;
+            commentUserEmailLink.href = `mailto:#`;
+            commentUserEmailLink.textContent = comment.email;
+            commentUserEmail.textContent = `User mail: `;
+            
+            
+            showMoreComments.setAttribute(`data-bs-toggle`, `collapse`);
+            showMoreComments.setAttribute(`aria-controls`, `multiCollapse${postId}`);
+            showMoreComments.setAttribute(`aria-expanded`, `false`);
+            showMoreComments.setAttribute(`role`, `button`);
+            showMoreComments.setAttribute(`data-bs-parent`,`#accordion`);
+            showMoreComments.textContent = `Show comments`;
+            showMoreComments.href = `#multiCollapse${postId}`;
+            showMoreComments.addEventListener(`click`, e => {
+                e.preventDefault();
+                if (e.target.ariaExpanded === `true`) {
+                    e.target.textContent = `Hide comments`;
+                    postCommentsWrapper.classList.add(`show`)
+                } else {
+                    e.target.textContent = `Show comments`;
+                }
             })
+            commentName.append(commentButton)
+            commentTextAccordion.append(commentBody, commentUserEmail)
+            postComment.append(commentName, commentTextAccordion)
+            postCommentsWrapper.append(postComment)
+            commentUserEmail.after(commentUserEmailLink)
         })
-
-
-        postsWrapper.prepend(postElement)
-        postElement.append(postTitle, postAuthor, postBody, postCommentsWrapper, showMoreComments)
-
-        postAuthor.after(authorLink)
-        
+    postsWrapper.prepend(postElement)
+    postElement.append(postTitle, postAuthor, postBody, postCommentsWrapper, showMoreComments)
+    postAuthor.after(authorLink)
     })
-})
+}
+renderPosts()
 
-fetch(`https://jsonplaceholder.typicode.com/albums?_limit=8`)
-.then(res=>res.json())
-.then(albums => {
-    albums.map(album => {
-        console.log(album.id)
+async function renderAlbums() {
+    let albums = await getAlbums();
+    albums.map(async album => {
+        const albumUserData = await getAlbumsUserData(album.userId);
+        const albumPhotos = await getAlbumUserPhotos(album.id)
+        console.log(albumPhotos)
         let albumElement = document.createElement(`div`);
-        albumElement.classList.add(`card`)
         let albumImg = document.createElement(`img`)
-        albumImg.classList.add(`card-img-top`)
         let albumBody = document.createElement(`div`);
-        albumBody.classList.add(`car-body`)
         let albumTitleLink = document.createElement(`a`);
-        albumTitleLink.href = `./album.html?album_id=${album.id}`
         let albumTitle = document.createElement(`h5`);
-        albumTitle.textContent = album.title
-        albumTitle.classList.add(`card-title`)
         let albumAuthor = document.createElement(`span`);
         let albumAuthorLink = document.createElement(`a`);
-
-        fetch(`https://jsonplaceholder.typicode.com/users/${album.userId}`)
-        .then(res=>res.json())
-        .then(user=>{
-            albumAuthor.textContent = `Album author: `;
-            albumAuthorLink.textContent = `${user.name}`;
-            albumAuthorLink.href = `./user.html?user_id=${album.userId}`;
-        })
-
-        fetch(`https://jsonplaceholder.typicode.com/albums/${album.id}/photos?_limit=1`)
-        .then(res=>res.json())
-        .then(img => {
-            albumImg.src = img[0].url;
-        })
+        albumElement.classList.add(`card`);
+        albumImg.classList.add(`card-img-top`);
+        albumBody.classList.add(`car-body`);
+        albumTitleLink.href = `./album.html?album_id=${album.id}`;
+        albumTitle.textContent = album.title;
+        albumTitle.classList.add(`card-title`);
+        albumAuthor.textContent = `Album author: `;
+        albumAuthorLink.textContent = `${albumUserData.name}`;
+        albumAuthorLink.href = `./user.html?user_id=${albumUserData.userId}`;
+        albumImg.src = albumPhotos[0].url;
 
         albumsWrapper.append(albumElement)
         albumElement.append(albumImg, albumBody)
@@ -144,4 +156,5 @@ fetch(`https://jsonplaceholder.typicode.com/albums?_limit=8`)
         albumTitleLink.append(albumTitle)
         albumAuthor.after(albumAuthorLink)
     })
-})
+}
+renderAlbums()
