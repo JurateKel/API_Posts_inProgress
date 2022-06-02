@@ -1,10 +1,6 @@
-let postsWrapper = document.createElement(`div`)
-postsWrapper.classList.add(`post-wrapper`)
-document.querySelector(`#main`).prepend(postsWrapper)
+const albumsWrapper= document.querySelector(`#albums-wrapper`)
+const postsWrapper = document.querySelector(`#posts-wrapper`)
 
-let albumsWrapper= document.createElement(`div`)
-albumsWrapper.classList.add(`album-wrapper`)
-document.querySelector(`#main`).prepend(albumsWrapper)
 
 async function getPosts() {
     let postsResponse = await fetch(`https://jsonplaceholder.typicode.com/posts?_limit=12`)
@@ -26,23 +22,15 @@ async function getAlbums() {
     let albumsData = await albumsResponse.json()
     return albumsData
 }
-async function albumPhoto(albumId) {
-    let albumPhotoResponse = await fetch(`https://jsonplaceholder.typicode.com/albums/${albumId}/photos?_limit=1`)
-    let albumPhotoData = await albumPhotoResponse.json()
-    return albumPhotoData
-}
+
 async function getAlbumsUserData(albumUserId) {
     const albumUsersRes = await fetch(`https://jsonplaceholder.typicode.com/users/${albumUserId}`)
     const albumUsersData = await albumUsersRes.json()
     return albumUsersData
 }
-async function getAlbumUserPhotos(albumId) {
-    const albumPhotosRes = await fetch(`https://jsonplaceholder.typicode.com/albums/${albumId}/photos?_limit=1`)
-    const albumPhotosData = await albumPhotosRes.json()
-    return albumPhotosData
-}
+
 async function renderPosts() {
-    let posts = await getPosts();
+    const posts = await getPosts();
     posts.map(async post => {
         const title = post.title;
         const body = post.body;
@@ -59,21 +47,21 @@ async function renderPosts() {
         postTitle.classList.add(`card-title`);
         postElement.classList.add(`card`);
 
-        let user = await getUser(userId);
+        const user = await getUser(userId);
         postTitle.textContent = title;
         postBody.textContent = body;
         postAuthor.textContent = `Author: `
         authorLink.href = `./user.html?user_id=${userId}`;
         authorLink.textContent = user.name;
 
-        let postComments = await getCommentsOfPost(postId);
+        const postComments = await getCommentsOfPost(postId);
         postComments.map(async comment => {
             const postComment = document.createElement(`div`);
             const commentName = document.createElement(`h2`);
             const commentButton = document.createElement(`button`);
             const commentTextAccordion = document.createElement(`div`);
             const commentBody = document.createElement(`div`);
-            const commentUserEmail = document.createElement(`span`);
+            const commentUserEmail = document.createElement(`p`);
             const commentUserEmailLink = document.createElement(`a`);
             postCommentsWrapper.classList.add(`accordion`, `accordion-flush`, `collapse`)
             postCommentsWrapper.setAttribute(`id`, `multiCollapse${postId}`);
@@ -114,24 +102,24 @@ async function renderPosts() {
                 }
             })
             commentName.append(commentButton)
-            commentTextAccordion.append(commentBody, commentUserEmail)
+            commentTextAccordion.append(commentBody)
+            commentBody.append(commentUserEmail)
             postComment.append(commentName, commentTextAccordion)
             postCommentsWrapper.append(postComment)
-            commentUserEmail.after(commentUserEmailLink)
+            commentUserEmail.append(commentUserEmailLink)
         })
-    postsWrapper.prepend(postElement)
+    postsWrapper.append(postElement)
     postElement.append(postTitle, postAuthor, postBody, postCommentsWrapper, showMoreComments)
-    postAuthor.after(authorLink)
+    postAuthor.append(authorLink)
     })
 }
 renderPosts()
 
 async function renderAlbums() {
-    let albums = await getAlbums();
+    const albums = await getAlbums();
+    let number = 1
     albums.map(async album => {
         const albumUserData = await getAlbumsUserData(album.userId);
-        const albumPhotos = await getAlbumUserPhotos(album.id)
-        console.log(albumPhotos)
         let albumElement = document.createElement(`div`);
         let albumImg = document.createElement(`img`)
         let albumBody = document.createElement(`div`);
@@ -147,8 +135,9 @@ async function renderAlbums() {
         albumTitle.classList.add(`card-title`);
         albumAuthor.textContent = `Album author: `;
         albumAuthorLink.textContent = `${albumUserData.name}`;
-        albumAuthorLink.href = `./user.html?user_id=${albumUserData.userId}`;
-        albumImg.src = albumPhotos[0].url;
+        albumAuthorLink.href = `./user.html?user_id=${albumUserData.id}`;
+        albumImg.src = `https://picsum.photos/200/200?random=${number}`;
+        number++
 
         albumsWrapper.append(albumElement)
         albumElement.append(albumImg, albumBody)

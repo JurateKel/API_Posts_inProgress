@@ -15,38 +15,31 @@ async function getUserById(albumUserId) {
     const userData = await userRes.json()
     return userData
 };
-async function getAlbumPhotoById(albumIdNum) {
-    const photoRes = await fetch(`https://jsonplaceholder.typicode.com/albums/${albumIdNum}/photos`)
-    const photoData = await photoRes.json()
-    return photoData
-};
+
 async function renderAlbum() {
     const album = await getAlbumsById(albumId);
     const user = await getUserById(album.userId);
-    const albumPhotos = await getAlbumPhotoById(albumId);
 
     let albumTitle = document.createElement(`h2`);
     let albumAuthorLink = document.createElement(`a`);
     let albumAuthor = document.createElement(`span`);
     albumTitle.textContent = album.title;
-    // albumTitle.style.paddingLeft = `2.5%`;
     albumAuthorLink.href = `./user.html?user_id=${album.userId}`;
     albumAuthorLink.textContent = user.name;
     albumAuthor.textContent = `Author: `;
-    // albumAuthor.style.padding = `2.5%`;
 
     albumWrapper.prepend(albumTitle);
     imgWrapper.before(albumAuthorLink);
     albumAuthorLink.before(albumAuthor);
 
-    albumPhotos.map(image => {
+    for (let i=1; i<50; i++) {
         let imgLink = document.createElement(`a`);
         let imgImg = document.createElement(`img`);
-        imgLink.href = image.url;
+        imgLink.href = `https://picsum.photos/600/600?random=${i}`;
         imgLink.target = `_blank`;
         imgLink.dataset.pswpHeight = `600px`;  
         imgLink.dataset.pswpWidth = `600px`;
-        imgImg.src = image.thumbnailUrl;
+        imgImg.src = `https://picsum.photos/200/200?random=${i}`;
         imgImg.style.width = `20%`; 
         imgImg.style.height = `20%`;
         imgImg.style.padding = `2.5%`;
@@ -54,6 +47,6 @@ async function renderAlbum() {
         albumWrapper.append(imgWrapper);
         imgWrapper.append(imgLink);
         imgLink.append(imgImg);
-    });
+    }
 };
 renderAlbum();

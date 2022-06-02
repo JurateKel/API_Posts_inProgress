@@ -1,7 +1,31 @@
-.user-profile-card {
-    width: 48%;
-    margin: 1%;
+body {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    background-color: #f8ffe0;
+    width: 90%;
+    margin: auto;
+}
+#user-profile {
+    width: 99%;
     padding: 10px;
     border-radius: 10px;
-    box-shadow: 5px 5px 5px rgb(209, 207, 218);
+    box-shadow: 5px 5px 5px rgb(189 207 137);
+    background-color: white;
+    margin-bottom: 20px;
+}
+#user-posts, #user-albums {
+    width: 47%;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 5px 5px 5px rgb(189 207 137);
+    background-color: white;
+}
+a {
+    font-style: italic;
+    color: black;
+}
+a:hover {
+    cursor: pointer;
+    text-decoration: underline;
 }

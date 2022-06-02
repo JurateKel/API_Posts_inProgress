@@ -1,15 +1,29 @@
-.post-wrapper {
+body {
+    background-color: rgb(250, 249, 253);
+}
+section> h4, a {
+    padding: 3% 3% 0 3%;
+    font-style: italic;
+}
+
+#posts-wrapper {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    background-color: rgb(250, 249, 253);
     padding: 2%;
 }
-.album-wrapper {
+#posts {    
+    background-color: rgb(244 254 211);
+    padding-bottom: 30px;
+}
+#albums-wrapper {
     display: flex;
     flex-wrap: wrap;
-    background-color: rgb(250, 249, 253);
     padding: 2%;
+}
+#albums {
+    background-color: rgb(212 254 255);
+    padding-bottom: 30px;
 }
 
 .accordion-button {
@@ -21,13 +35,31 @@
     margin: 1%;
     padding: 10px;
     border-radius: 10px;
-    box-shadow: 5px 5px 5px rgb(209, 207, 218);
+    box-shadow: 5px 5px 5px rgb(150 174 72);
+    
 }
-.album-wrapper .card {
+#albums-wrapper .card {
     width: 23%;
     margin: 1%;
     padding: 10px;
     border-radius: 10px;
-    box-shadow: 5px 5px 5px rgb(209, 207, 218);
+    box-shadow: 5px 5px 5px rgb(22 168 171);
 }
 
+button {
+    width: 110px;
+}
+#show-all-albums{
+    margin-bottom: 10px;
+}
+#show-all-posts{
+    margin-bottom: 10px;
+}
+a {
+    text-decoration: none;
+    color: black;
+}
+a:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}

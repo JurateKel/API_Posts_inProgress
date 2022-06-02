@@ -1,0 +1,38 @@
+body>div {
+    width: 80%;
+    margin: auto;
+    background-color: white;
+    padding: 20px;
+}
+body {
+    background-color: azure;
+}
+#post {
+    margin-bottom: 30px;
+    border-radius: 10px;
+}
+#comments-wrapper {
+    margin-bottom: 30px;
+    border-radius: 10px;
+}
+h1, h3 {
+    font-style: italic;
+}
+#comments {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+#comments div{
+    width: 50%;
+    padding-right: 10px;
+    box-sizing: border-box;
+}
+a {
+    color: black;
+    font-style: italic;
+}
+a:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
